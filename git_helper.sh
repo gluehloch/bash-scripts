@@ -17,11 +17,13 @@ function git_dirty {
 }
 
 function git_branch {
-	git branch --no-color 2> /dev/null | sed -e '/^[^*]/d'
+    git branch | sed -n '/\* /s///p'
+	###git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' 
 	###-e "s/* \(.*\)/[\l$(git_dirty)]/"
+	###
 }
 
-export PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\] git: $(git_branch) \n$ '
+export PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\] [$(git_branch)] [$(git_dirty)] \n$ '
 
 
 alias gll='git log --graph --pretty=oneline --abbrev-commit'
