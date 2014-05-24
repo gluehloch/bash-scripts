@@ -43,7 +43,7 @@ svn co https://svn.code.sf.net/p/betoffice/svn/awtools/awtools-config/trunk \
  $PROJECT_AWTOOLS/awtools-config_TRUNK
 svn co https://svn.code.sf.net/p/betoffice/svn/awtools/awtools-mail/trunk \
  $PROJECT_AWTOOLS/awtools-mail_TRUNK
-svn co https://svn.code.sf.net/p/betoffice/svn/awtools/awtools-lang/trunk \ 
+svn co https://svn.code.sf.net/p/betoffice/svn/awtools/awtools-lang/trunk \
  $PROJECT_AWTOOLS/awtools-lang_TRUNK
 svn co https://svn.code.sf.net/p/betoffice/svn/awtools/awtools-xml/trunk \
  $PROJECT_AWTOOLS/awtools-xml_TRUNK
@@ -81,7 +81,7 @@ git clone git@bitbucket.org:andrewinkler/betoffice-js.git \
  $PROJECT_BETOFFICE_WEB/betoffice-js
 git clone git@bitbucket.org:andrewinkler/betoffice-home.git \
  $PROJECT_BETOFFICE_WEB/betoffice-home
-git clone https://andrewinkler@bitbucket.org/andrewinkler/betoffice-jadmin.git \
+git clone git@bitbucket.org:andrewinkler/betoffice-jadmin.git \
  $PROJECT_BETOFFICE_WEB/betoffice-jadmin
 
 #svn co https://svn.code.sf.net/p/betoffice/svn/main/trunk/betoffice-jsweb \
