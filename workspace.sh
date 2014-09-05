@@ -1,9 +1,41 @@
 #!/bin/bash
 
+args=("$@")
+
+COMPILE=false
+DELETE=false
+
+filename=~/system_page.html
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -f | --file )   shift
+                        filename=$1
+                        ;;
+        -c | --compile )COMPILE=true
+                        ;;
+        -d | --delete ) DELETE=true
+                        ;;
+        -h | --help )   usage
+                        exit
+                        ;;
+        * )             usage
+                        exit 1
+    esac
+    shift
+done
+
+if [ "$COMPILE" = false ]; then
+    echo "Performing a checkout without compiling."
+else
+    echo "Performing a checkout with compiling."
+fi
+
 export PROJECT_ROOT=`pwd`
 export PROJECT_MAVEN_POM="$PROJECT_ROOT/pom"
 export PROJECT_AWTOOLS="$PROJECT_ROOT/awtools"
 export PROJECT_AWTOOLS_WEB="$PROJECT_ROOT/awtools-web"
+export PROJECT_SWINGER="$PROJECT_ROOT/swinger"
 export PROJECT_BETOFFICE="$PROJECT_ROOT/betoffice"
 export PROJECT_BETOFFICE_CORE="$PROJECT_BETOFFICE/core"
 export PROJECT_BETOFFICE_WEB="$PROJECT_BETOFFICE/web"
@@ -14,10 +46,21 @@ echo "Project root is $PROJECT_ROOT"
 #
 # 1. Create project folders
 #
-folders=( "$PROJECT_AWTOOLS" \
+folders=( "$PROJECT_MAVEN_POM" \
+ "$PROJECT_AWTOOLS" \
+ "$PROJECT_SWINGER" \
  "$PROJECT_BETOFFICE" \
  "$PROJECT_MISC")
 
+if [ "$DELETE" = true ]; then
+	for index in $(seq 0 $((${#folders[@]} - 1)))
+	do
+		folder="${folders[index]}"
+		echo "Delete project from ${folder}"
+		rm -r -f "${folder}"
+	done
+fi
+ 
 for index in $(seq 0 $((${#folders[@]} - 1)))
 do
     folder="${folders[index]}"
@@ -34,7 +77,7 @@ git clone ssh://andrewinkler@git.code.sf.net/p/betoffice/betoffice-pom \
  "$PROJECT_MAVEN_POM/betoffice-pom"
 
 #
-# AWTools COMMONS on Sourceforge
+# AWTools COMMONS on Sourceforge / Github
 #
 svn co https://svn.code.sf.net/p/betoffice/svn/awtools/awtools-basic/trunk \
  "$PROJECT_AWTOOLS/awtools-basic_TRUNK"
@@ -49,6 +92,9 @@ svn co https://svn.code.sf.net/p/betoffice/svn/awtools/awtools-lang/trunk \
 svn co https://svn.code.sf.net/p/betoffice/svn/awtools/awtools-xml/trunk \
  "$PROJECT_AWTOOLS/awtools-xml_TRUNK"
 
+git clone git@github.com:gluehloch/dbload.git \
+ "$PROJECT_MISC/dbload"
+ 
 #
 # AWTools Homepgae
 #
@@ -61,13 +107,13 @@ git clone git@bitbucket.org:andrewinkler/awtools-homegen-js.git \
 # AWTools for Swing
 #
 svn co https://svn.code.sf.net/p/betoffice/svn/swinger/commons/trunk \
- "$PROJECT_AWTOOLS/swinger-commons_TRUNK"
+ "$PROJECT_SWINGER/swinger-commons_TRUNK"
 svn co https://svn.code.sf.net/p/betoffice/svn/swinger/commands/trunk \
- "$PROJECT_AWTOOLS/swinger-commands_TRUNK"
+ "$PROJECT_SWINGER/swinger-commands_TRUNK"
 svn co https://svn.code.sf.net/p/betoffice/svn/swinger/tree/trunk \
- "$PROJECT_AWTOOLS/swinger-tree_TRUNK"
+ "$PROJECT_SWINGER/swinger-tree_TRUNK"
 svn co https://svn.code.sf.net/p/betoffice/svn/swinger/concurrent/trunk \
- "$PROJECT_AWTOOLS/swinger-concurrent_TRUNK"
+ "$PROJECT_SWINGER/swinger-concurrent_TRUNK"
 
 #
 # BETOFFICE CORE
@@ -112,10 +158,10 @@ projects=( "$PROJECT_MAVEN_POM/awtools-maven-pom" \
  "$PROJECT_AWTOOLS/awtools-mail_TRUNK" \
  "$PROJECT_AWTOOLS/awtools-lang_TRUNK" \
  "$PROJECT_AWTOOLS/awtools-xml_TRUNK" \
- "$PROJECT_AWTOOLS/swinger-commons_TRUNK" \
- "$PROJECT_AWTOOLS/swinger-commands_TRUNK" \
- "$PROJECT_AWTOOLS/swinger-tree_TRUNK" \
- "$PROJECT_AWTOOLS/swinger-concurrent_TRUNK" \
+ "$PROJECT_SWINGER/swinger-commons_TRUNK" \
+ "$PROJECT_SWINGER/swinger-commands_TRUNK" \
+ "$PROJECT_SWINGER/swinger-tree_TRUNK" \
+ "$PROJECT_SWINGER/swinger-concurrent_TRUNK" \
  "$PROJECT_BETOFFICE_CORE/betoffice-storage_TRUNK" \
  "$PROJECT_BETOFFICE_CORE/betoffice-exchange_TRUNK" \
  "$PROJECT_BETOFFICE_CORE/betoffice-batch_TRUNK" \
@@ -124,17 +170,18 @@ projects=( "$PROJECT_MAVEN_POM/awtools-maven-pom" \
  "$PROJECT_AWTOOLS_WEB/awtools-homegen" \
 )
 
-echo "Start building..."
-echo ${#projects[@]} 
-
-for index in $(seq 0 $((${#projects[@]} - 1)))
-do
-    project=${projects[index]}
-    echo "Build project ${project}"
-    cd "$project"
-    mvn clean install | tee ${LOGFILE}
-    cd ..
-done
+if [ "$COMPILE" = true ]; then
+    echo "Start building..."
+    echo ${#projects[@]} 
+    for index in $(seq 0 $((${#projects[@]} - 1)))
+    do
+        project=${projects[index]}
+        echo "Build project ${project}"
+        cd "$project"
+        mvn clean install | tee ${LOGFILE}
+        cd ..
+    done
+fi
 
 exit 0
 
