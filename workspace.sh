@@ -2,19 +2,29 @@
 
 args=("$@")
 
-COMPILE=false
-DELETE=false
+BUILD=false
+CLEAN=false
 
-filename=~/system_page.html
+PROJECT_ROOT=`pwd`
+
+usage() {
+    echo "Init workspace"
+    echo "  -d <directory> --directory the name of the directory"
+    echo "  -b --build Start building after checkout"
+    echo "  -c --clean Clean and delete the workspace before checkout"
+    echo "  -h --help Print this"
+    echo "  -h --help Print this"
+    echo ""
+}
 
 while [ "$1" != "" ]; do
     case $1 in
-        -f | --file )   shift
-                        filename=$1
+        -d | --directory ) shift
+                        PROJECT_ROOT=$1
                         ;;
-        -c | --compile )COMPILE=true
+        -b | --build )  BUILD=true
                         ;;
-        -d | --delete ) DELETE=true
+        -c | --clean )  CLEAN=true
                         ;;
         -h | --help )   usage
                         exit
@@ -25,13 +35,14 @@ while [ "$1" != "" ]; do
     shift
 done
 
-if [ "$COMPILE" = false ]; then
-    echo "Performing a checkout without compiling."
+if [ "$BUILD" = false ]; then
+    echo "Performing a checkout without building."
 else
-    echo "Performing a checkout with compiling."
+    echo "Performing a checkout with BUILDING!"
 fi
 
-export PROJECT_ROOT=`pwd`
+echo "Building: $BUILD CLeaning: $CLEAN Directory: '$PROJECT_ROOT'"
+
 export PROJECT_MAVEN_POM="$PROJECT_ROOT/pom"
 export PROJECT_AWTOOLS="$PROJECT_ROOT/awtools"
 export PROJECT_AWTOOLS_WEB="$PROJECT_ROOT/awtools-web"
@@ -43,6 +54,8 @@ export PROJECT_MISC="$PROJECT_ROOT/misc"
 
 echo "Project root is $PROJECT_ROOT"
 
+exit 0
+
 #
 # 1. Create project folders
 #
@@ -52,11 +65,11 @@ folders=( "$PROJECT_MAVEN_POM" \
  "$PROJECT_BETOFFICE" \
  "$PROJECT_MISC")
 
-if [ "$DELETE" = true ]; then
+if [ "$CLEAN" = true ]; then
 	for index in $(seq 0 $((${#folders[@]} - 1)))
 	do
 		folder="${folders[index]}"
-		echo "Delete project from ${folder}"
+		echo "CLEAN project from ${folder}"
 		rm -r -f "${folder}"
 	done
 fi
@@ -170,7 +183,7 @@ projects=( "$PROJECT_MAVEN_POM/awtools-maven-pom" \
  "$PROJECT_AWTOOLS_WEB/awtools-homegen" \
 )
 
-if [ "$COMPILE" = true ]; then
+if [ "$BUILD" = true ]; then
     echo "Start building..."
     echo ${#projects[@]} 
     for index in $(seq 0 $((${#projects[@]} - 1)))
