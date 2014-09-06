@@ -20,7 +20,7 @@ usage() {
 
 while [ "$1" != "" ]; do
     case $1 in
-        --debug         DEBUG=true
+        --debug )       DEBUG=true
                         ;;
         -d | --directory ) shift
                         PROJECT_ROOT=$1
@@ -38,7 +38,7 @@ while [ "$1" != "" ]; do
     shift
 done
 
-if ["$DEBUG" = true ]; then
+if [ "$DEBUG" = true ]; then
     echo "Building: $BUILD CLeaning: $CLEAN Directory: '$PROJECT_ROOT'"
 fi
 
@@ -52,8 +52,6 @@ export PROJECT_BETOFFICE_WEB="$PROJECT_BETOFFICE/web"
 export PROJECT_MISC="$PROJECT_ROOT/misc"
 
 echo "Project root is $PROJECT_ROOT"
-
-exit 0
 
 #
 # 1. Create project folders
