@@ -24,6 +24,11 @@ while [ "$1" != "" ]; do
                         ;;
         -d | --directory ) shift
                         PROJECT_ROOT=$1
+                        if [ -z "$PROJECT_ROOT" ]; then
+                            echo "There is a missing directory parameter!"
+                            usage
+                            exit 1
+                        fi
                         ;;
         -b | --build )  BUILD=true
                         ;;
