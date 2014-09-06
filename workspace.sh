@@ -4,6 +4,7 @@ args=("$@")
 
 BUILD=false
 CLEAN=false
+DEBUG=false
 
 PROJECT_ROOT=`pwd`
 
@@ -19,6 +20,8 @@ usage() {
 
 while [ "$1" != "" ]; do
     case $1 in
+        --debug         DEBUG=true
+                        ;;
         -d | --directory ) shift
                         PROJECT_ROOT=$1
                         ;;
@@ -35,13 +38,9 @@ while [ "$1" != "" ]; do
     shift
 done
 
-if [ "$BUILD" = false ]; then
-    echo "Performing a checkout without building."
-else
-    echo "Performing a checkout with BUILDING!"
+if ["$DEBUG" = true ]; then
+    echo "Building: $BUILD CLeaning: $CLEAN Directory: '$PROJECT_ROOT'"
 fi
-
-echo "Building: $BUILD CLeaning: $CLEAN Directory: '$PROJECT_ROOT'"
 
 export PROJECT_MAVEN_POM="$PROJECT_ROOT/pom"
 export PROJECT_AWTOOLS="$PROJECT_ROOT/awtools"
@@ -107,6 +106,8 @@ svn co https://svn.code.sf.net/p/betoffice/svn/awtools/awtools-xml/trunk \
 
 git clone git@github.com:gluehloch/dbload.git \
  "$PROJECT_MISC/dbload"
+git clone git@github.com:gluehloch/andre-winkler-it.git \
+ "$PROJECT_MISC/andre-winkler-it"
  
 #
 # AWTools Homepgae
@@ -149,8 +150,8 @@ git clone ssh://andrewinkler@git.code.sf.net/p/betoffice/betoffice-test \
 #
 # BETOFFICE WEB
 #
-svn co https://svn.code.sf.net/p/betoffice/svn/main/trunk/betoffice-jweb \
- "$PROJECT_BETOFFICE_WEB/betoffice-jweb_TRUNK"
+git clone git@bitbucket.org:andrewinkler/betoffice-jweb.git \
+ "$PROJECT_BETOFFICE_WEB/betoffice-jweb"
 git clone git@bitbucket.org:andrewinkler/betoffice-js.git \
  "$PROJECT_BETOFFICE_WEB/betoffice-js"
 git clone git@bitbucket.org:andrewinkler/betoffice-home.git \
