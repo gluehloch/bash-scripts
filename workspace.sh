@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# (C) Andre Winkler 2014
 args=("$@")
 
 BUILD=false
