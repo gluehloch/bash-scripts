@@ -142,6 +142,8 @@ git clone ssh://andrewinkler@git.code.sf.net/p/betoffice/betoffice-testutils \
 git clone ssh://andrewinkler@git.code.sf.net/p/betoffice/betoffice-storage \
  "$PROJECT_BETOFFICE_CORE/betoffice-storage"
 git clone ssh://andrewinkler@git.code.sf.net/p/betoffice/betoffice-exchange \
+ "$PROJECT_BETOFFICE_CORE/betoffice-openligadb"
+git clone ssh://andrewinkler@git.code.sf.net/p/betoffice/betoffice-openligadb \
  "$PROJECT_BETOFFICE_CORE/betoffice-exchange"
 git clone ssh://andrewinkler@git.code.sf.net/p/betoffice/betoffice-batch \
  "$PROJECT_BETOFFICE_CORE/betoffice-batch"
