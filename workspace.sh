@@ -182,6 +182,7 @@ projects=( "$PROJECT_MAVEN_POM/awtools-maven-pom" \
  "$PROJECT_SWINGER/swinger-tree_TRUNK" \
  "$PROJECT_SWINGER/swinger-concurrent_TRUNK" \
  "$PROJECT_BETOFFICE_CORE/betoffice-storage_TRUNK" \
+ "$PROJECT_BETOFFICE_CORE/betoffice-openligadb_TRUNK" \
  "$PROJECT_BETOFFICE_CORE/betoffice-exchange_TRUNK" \
  "$PROJECT_BETOFFICE_CORE/betoffice-batch_TRUNK" \
  "$PROJECT_BETOFFICE_CORE/betoffice-swing_TRUNK" \
