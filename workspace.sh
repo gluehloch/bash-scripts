@@ -2,6 +2,9 @@
 # (C) Andre Winkler 2014
 args=("$@")
 
+### AWI TODO
+### jspack is missing!
+
 BUILD=false
 CLEAN=false
 DEBUG=false
@@ -68,12 +71,12 @@ folders=( "$PROJECT_MAVEN_POM" \
  "$PROJECT_MISC")
 
 if [ "$CLEAN" = true ]; then
-	for index in $(seq 0 $((${#folders[@]} - 1)))
-	do
-		folder="${folders[index]}"
-		echo "CLEAN project from ${folder}"
-		rm -r -f "${folder}"
-	done
+    for index in $(seq 0 $((${#folders[@]} - 1)))
+    do
+        folder="${folders[index]}"
+        echo "CLEAN project from ${folder}"
+        rm -r -f "${folder}"
+    done
 fi
  
 for index in $(seq 0 $((${#folders[@]} - 1)))
@@ -111,6 +114,9 @@ git clone git@github.com:gluehloch/dbload.git \
  "$PROJECT_MISC/dbload"
 git clone git@github.com:gluehloch/andre-winkler-it.git \
  "$PROJECT_MISC/andre-winkler-it"
+git clone git@github.com:gluehloch/jspack.git \
+ "$PROJECT_MISC/jspack"
+
  
 #
 # AWTools Homepgae
@@ -141,9 +147,9 @@ git clone ssh://andrewinkler@git.code.sf.net/p/betoffice/betoffice-testutils \
  "$PROJECT_BETOFFICE_CORE/betoffice-testutils"
 git clone ssh://andrewinkler@git.code.sf.net/p/betoffice/betoffice-storage \
  "$PROJECT_BETOFFICE_CORE/betoffice-storage"
-git clone ssh://andrewinkler@git.code.sf.net/p/betoffice/betoffice-exchange \
- "$PROJECT_BETOFFICE_CORE/betoffice-openligadb"
 git clone ssh://andrewinkler@git.code.sf.net/p/betoffice/betoffice-openligadb \
+ "$PROJECT_BETOFFICE_CORE/betoffice-openligadb"
+git clone ssh://andrewinkler@git.code.sf.net/p/betoffice/betoffice-exchange \
  "$PROJECT_BETOFFICE_CORE/betoffice-exchange"
 git clone ssh://andrewinkler@git.code.sf.net/p/betoffice/betoffice-batch \
  "$PROJECT_BETOFFICE_CORE/betoffice-batch"
