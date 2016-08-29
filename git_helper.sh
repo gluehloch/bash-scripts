@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Alle Meldungen auf Englisch, sonst macht das Greppen keinen Sinn!
+alias git='LANG=en_GB git'
+
 function git_deleted {
     [[ $(git status 2> /dev/null | grep deleted:) != "" ]] && echo "-"
 }
