@@ -23,9 +23,11 @@ println """
 """
 reset()
 
+/*
 def fg = 30
 def bg = 46
 def style = "${(char)27}[$fg;$bg"+"m"
+*/
 
 def pomAsFile = new File("pom.xml")
 def pom = new XmlSlurper().parse(pomAsFile)
@@ -34,11 +36,13 @@ def derivedGroupId = pom.groupId?.text() ?: pom.parent.groupId
 
 def enableWarning = false
 
-println "Parent POM...: ${pom.parent.groupId}:${pom.parent.artifactId}:${pom.parent.version}"
+println "Parent POM:"
+println "    ${pom.parent.groupId}:${pom.parent.artifactId}:${pom.parent.version}"
 if (pom.version.toString().contains('SNAPSHOT')) {
     yellow()
 }
-println "Project POM..: ${derivedGroupId}:${pom.artifactId}:${pom.version}"
+println "Project POM:"
+println "    ${derivedGroupId}:${pom.artifactId}:${pom.version}"
 reset()
 
 println ""
