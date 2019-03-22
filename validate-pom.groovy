@@ -58,16 +58,36 @@ pom.dependencies.dependency.each { dependency ->
 
 println ""
 
+// changes.xml properly modified with release date?
+println "changes.xml:"
+def changesXmlAsFile = new File("./src/changes/changes.xml")
+def changesXml = new XmlSlurper().parse(changesXmlAsFile)
+def lastReleaseElement = changesXml.body.release[0]
+def today = new Date().format('yyyy-MM-dd')
+if (lastReleaseElement.@date.toString().contains('??-??')) {
+    yellow()
+    println "    Release date is undefined: ${lastReleaseElement.@date.toString()}"
+    reset()
+} else if (lastReleaseElement.@date.toString().contains(today)) {
+    yellow();
+    println "    Release date is not today: ${lastReleaseElement.@date.toString()}"
+}
+
 // TODO Are there uncommited changes?
 def sout = new StringBuilder()
 def serr = new StringBuilder()
 def proc = 'git status'.execute()
 proc.consumeProcessOutput(sout, serr)
 proc.waitForOrKill(1000)
+println ""
+println "Git repository:"
 if (sout.toString().contains('git add')) {
     yellow()
-    println "Git repository:"
     println "    Uncommited changes! Check with git status."
+} else {
+    green()
+    println "Ok"
+    reset()
 }
 // println "out> $sout err> $serr"
 
