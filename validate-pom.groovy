@@ -14,6 +14,12 @@ def reset() {
     print "\033[0m"
 }
 
+def ok() {
+    green()
+    println "    Ok"
+    reset()
+}
+
 green()
 println """
 ///
@@ -37,7 +43,11 @@ def derivedGroupId = pom.groupId?.text() ?: pom.parent.groupId
 def enableWarning = false
 
 println "Parent POM:"
+if (pom.parent.version.toString().contains('SNAPSHOT')) {
+    yellow()
+}
 println "    ${pom.parent.groupId}:${pom.parent.artifactId}:${pom.parent.version}"
+reset()
 if (pom.version.toString().contains('SNAPSHOT')) {
     yellow()
 }
@@ -65,12 +75,17 @@ def changesXml = new XmlSlurper().parse(changesXmlAsFile)
 def lastReleaseElement = changesXml.body.release[0]
 def today = new Date().format('yyyy-MM-dd')
 if (lastReleaseElement.@date.toString().contains('??-??')) {
+    enableWarning = true
     yellow()
     println "    Release date is undefined: ${lastReleaseElement.@date.toString()}"
     reset()
-} else if (lastReleaseElement.@date.toString().contains(today)) {
+} else if (!lastReleaseElement.@date.toString().contains(today)) {
+    enableWarning = true
     yellow();
     println "    Release date is not today: ${lastReleaseElement.@date.toString()}"
+    reset()
+} else {
+    ok()
 }
 
 // TODO Are there uncommited changes?
@@ -82,23 +97,24 @@ proc.waitForOrKill(1000)
 println ""
 println "Git repository:"
 if (sout.toString().contains('git add')) {
+    enableWarning = true
     yellow()
     println "    Uncommited changes! Check with git status."
 } else {
-    green()
-    println "Ok"
-    reset()
+    ok()
 }
 // println "out> $sout err> $serr"
 
+println ""
 if (enableWarning) {
     red()
-    println """
-///  Check you dependencies!
-"""
+    println "///"
+    println "///  Check all WARNINGS."
+    println "///"
     reset()
 } else {
     println "Release me!"
+    ok()
 }
 
 // Check: changes.xml No ??-?? dates declated?
