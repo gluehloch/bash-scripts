@@ -47,15 +47,21 @@ def derivedGroupId = pom.groupId?.text() ?: pom.parent.groupId
 
 def enableWarning = false
 
-println "Parent POM:"
 if (pom.parent.version.toString().contains('SNAPSHOT')) {
     yellow()
+} else {
+    green()
 }
+println ""
+println "Parent POM:"
 println "    ${pom.parent.groupId}:${pom.parent.artifactId}:${pom.parent.version}"
 reset()
 if (pom.version.toString().contains('SNAPSHOT')) {
     yellow()
+} else {
+    green()
 }
+println ""
 println "Project POM:"
 println "    ${derivedGroupId}:${pom.artifactId}:${pom.version}"
 reset()
