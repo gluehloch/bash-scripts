@@ -35,22 +35,33 @@ def bg = 46
 def style = "${(char)27}[$fg;$bg"+"m"
 */
 
-def pomAsFile = new File("pom.xml")
-def pom = new XmlSlurper().parse(pomAsFile)
+def pom
+try {
+    pom = new XmlSlurper().parse(new File("pom.xml"))
+} catch (FileNotFoundException ex) {
+    println "This is not a Maven project. There is no pom.xml"
+    return
+}
 
 def derivedGroupId = pom.groupId?.text() ?: pom.parent.groupId
 
 def enableWarning = false
 
-println "Parent POM:"
 if (pom.parent.version.toString().contains('SNAPSHOT')) {
     yellow()
+} else {
+    green()
 }
+println ""
+println "Parent POM:"
 println "    ${pom.parent.groupId}:${pom.parent.artifactId}:${pom.parent.version}"
 reset()
 if (pom.version.toString().contains('SNAPSHOT')) {
     yellow()
+} else {
+    green()
 }
+println ""
 println "Project POM:"
 println "    ${derivedGroupId}:${pom.artifactId}:${pom.version}"
 reset()
