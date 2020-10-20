@@ -32,6 +32,7 @@ export PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\] [$(git_branch)]
 alias gll='git log --graph --pretty=oneline --abbrev-commit'
 alias gst='git status'
 alias gdw='git diff --word-diff'
+alias glt='git log --no-walk --tags --pretty="%h %d %s" --decorate=full'
 
 function git_info() {
 
